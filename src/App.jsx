@@ -1,0 +1,111 @@
+import React, { useEffect, useMemo, useState } from 'react';
+import TopBar from './components/TopBar';
+import Sidebar from './components/Sidebar';
+import TodayDashboard from './components/TodayDashboard';
+import QuestionPractice from './components/QuestionPractice';
+import ListeningPage from './components/ListeningPage';
+import ConversationTopics from './components/ConversationTopics';
+import CalendarProgress from './components/CalendarProgress';
+import { dailyPatterns, patternLabel, weekSchedule } from './constants/patterns';
+import { loadDayData, markTaskDone, recordQuestionResult, updateListeningRecord } from './utils/storage';
+
+const App = () => {
+  const [currentView, setCurrentView] = useState('today');
+  const [focusType, setFocusType] = useState(null);
+  const [patternKey, setPatternKey] = useState('A');
+  const [dayData, setDayData] = useState(null);
+
+  useEffect(() => {
+    const today = new Date();
+    const weekday = today.getDay();
+    const key = weekSchedule[weekday] || 'A';
+    setPatternKey(key);
+    const loaded = loadDayData(key);
+    setDayData(loaded);
+  }, []);
+
+  const pattern = useMemo(() => dailyPatterns[patternKey], [patternKey]);
+  const questionPattern = useMemo(
+    () => Object.fromEntries(Object.entries(pattern || {}).filter(([k]) => k !== 'listening')),
+    [pattern]
+  );
+
+  const handleQuestionAnswer = (type, correct, limit) => {
+    setDayData((prev) => recordQuestionResult(prev, type, correct, limit));
+  };
+
+  const handleListeningSubmit = (correct, total) => {
+    setDayData((prev) => updateListeningRecord(prev, correct, total));
+  };
+
+  const handleConversationSelect = (topicId) => {
+    setDayData((prev) => markTaskDone(prev, 'conversationDone', { conversationTopicId: topicId }));
+  };
+
+  const handleStartFromToday = (type) => {
+    if (type === 'listening') {
+      setCurrentView('listening');
+      setFocusType(null);
+    } else if (type === 'conversation') {
+      setCurrentView('conversation');
+      setFocusType(null);
+    } else {
+      setCurrentView('questions');
+      setFocusType(type);
+    }
+  };
+
+  const renderContent = () => {
+    switch (currentView) {
+      case 'questions':
+        return (
+          <QuestionPractice
+            pattern={questionPattern}
+            dayData={dayData}
+            onAnswer={handleQuestionAnswer}
+            focusType={focusType}
+          />
+        );
+      case 'listening':
+        return <ListeningPage pattern={pattern} dayData={dayData} onSubmit={handleListeningSubmit} />;
+      case 'conversation':
+        return <ConversationTopics dayData={dayData} onSelect={handleConversationSelect} />;
+      case 'calendar':
+        return <CalendarProgress />;
+      case 'today':
+      default:
+        return (
+          <div className="home-grid">
+            <TodayDashboard
+              patternKey={patternKey}
+              pattern={pattern}
+              dayData={dayData}
+              onStart={handleStartFromToday}
+            />
+            <CalendarProgress compact refreshKey={`${dayData?.date}-${dayData?.totalCount}`} />
+          </div>
+        );
+    }
+  };
+
+  const patternDescription = pattern
+    ? Object.entries(pattern)
+        .map(([k, v]) => `${patternLabel(k)}：${v}問`)
+        .join('、 ')
+    : '';
+
+  return (
+    <div className="app">
+      <TopBar />
+      <div className="layout">
+        <Sidebar current={currentView} onChange={setCurrentView} />
+        <main className="main">
+          <div className="pattern-banner">今日はパターン{patternKey}（{patternDescription} ＋ 会話1トピック）</div>
+          {renderContent()}
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default App;
