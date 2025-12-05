@@ -2,7 +2,9 @@ import React from 'react';
 
 const menuItems = [
   { key: 'today', label: 'ホーム / 今日のミッション', icon: '🏠' },
-  { key: 'questions', label: '問題（単語・文法・読解）', icon: '✏️' },
+  { key: 'vocab', label: '単語', icon: '🔤' },
+  { key: 'grammar', label: '文法', icon: '📘' },
+  { key: 'reading', label: '読解', icon: '📖' },
   { key: 'listening', label: '聴解', icon: '🎧' },
   { key: 'conversation', label: '会話トピック', icon: '💬' },
   { key: 'calendar', label: 'カレンダー・進みぐあい', icon: '📅' },

@@ -6,6 +6,8 @@
   --muted: #7a6f77;
   --purple-soft: #e6dcff;
   --peach: #ffd9c8;
+  --mint: #b8f2e6;
+  --sky: #c9e8ff;
 }
 
 * {
@@ -395,6 +397,11 @@ h3 {
   background: #fff0f6;
 }
 
+.option-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 .option-btn.selected {
   border-color: var(--pink-strong);
   background: #ffe7f2;
@@ -583,6 +590,115 @@ h3 {
   border-radius: 12px;
   padding: 12px;
   border: 1px solid #f4d5e3;
+}
+
+.question-page {
+  background: linear-gradient(165deg, rgba(255, 226, 241, 0.7), #ffffff 40%, rgba(200, 232, 255, 0.3));
+  border: 1px solid #f2d4e7;
+}
+
+.question-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.pill {
+  background: #fff;
+  border-radius: 999px;
+  padding: 8px 14px;
+  border: 1px solid #f2bfd5;
+  font-weight: 700;
+  color: #a63e74;
+  box-shadow: 0 10px 20px rgba(243, 157, 189, 0.28);
+}
+
+.floating-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: linear-gradient(120deg, #ffe8f4, #c9e8ff);
+  padding: 8px 12px;
+  border-radius: 14px;
+  font-weight: 700;
+  color: #4a2d3a;
+}
+
+.question-hero {
+  background: linear-gradient(120deg, rgba(255, 228, 245, 0.8), rgba(184, 242, 230, 0.5));
+  border-radius: 16px;
+  padding: 14px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.bubble {
+  background: #fff;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #f2bfd5;
+  font-weight: 800;
+  color: #a63e74;
+}
+
+.meter {
+  height: 10px;
+  background: #ffe7f2;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid #f2bfd5;
+}
+
+.meter-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #f39dbd, #b8f2e6);
+  width: 10%;
+  transition: width 0.3s ease;
+}
+
+.meter-label {
+  font-weight: 700;
+  color: #5b3a4c;
+}
+
+.question-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.question-text-box {
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px;
+  border: 1px solid #f2d4e7;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.03);
+}
+
+.options-grid.lively .option-btn {
+  border: 1px solid #f2d4e7;
+  background: linear-gradient(140deg, #fff, rgba(255, 232, 244, 0.8));
+  font-weight: 700;
+}
+
+.options-grid.lively .option-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 16px rgba(243, 157, 189, 0.2);
+}
+
+.card-inline {
+  border: 1px solid #f2d4e7;
+  background: #fffdfd;
+}
+
+.next-row {
+  display: flex;
+  justify-content: flex-end;
 }
 
 @media (max-width: 1100px) {

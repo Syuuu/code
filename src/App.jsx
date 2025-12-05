@@ -11,7 +11,6 @@ import { loadDayData, markTaskDone, recordQuestionResult, updateListeningRecord 
 
 const App = () => {
   const [currentView, setCurrentView] = useState('today');
-  const [focusType, setFocusType] = useState(null);
   const [patternKey, setPatternKey] = useState('A');
   const [dayData, setDayData] = useState(null);
 
@@ -25,11 +24,6 @@ const App = () => {
   }, []);
 
   const pattern = useMemo(() => dailyPatterns[patternKey], [patternKey]);
-  const questionPattern = useMemo(
-    () => Object.fromEntries(Object.entries(pattern || {}).filter(([k]) => k !== 'listening')),
-    [pattern]
-  );
-
   const handleQuestionAnswer = (type, correct, limit) => {
     setDayData((prev) => recordQuestionResult(prev, type, correct, limit));
   };
@@ -45,27 +39,21 @@ const App = () => {
   const handleStartFromToday = (type) => {
     if (type === 'listening') {
       setCurrentView('listening');
-      setFocusType(null);
     } else if (type === 'conversation') {
       setCurrentView('conversation');
-      setFocusType(null);
     } else {
-      setCurrentView('questions');
-      setFocusType(type);
+      setCurrentView(type || 'vocab');
     }
   };
 
   const renderContent = () => {
     switch (currentView) {
-      case 'questions':
-        return (
-          <QuestionPractice
-            pattern={questionPattern}
-            dayData={dayData}
-            onAnswer={handleQuestionAnswer}
-            focusType={focusType}
-          />
-        );
+      case 'vocab':
+        return <QuestionPractice type="vocab" pattern={pattern} dayData={dayData} onAnswer={handleQuestionAnswer} />;
+      case 'grammar':
+        return <QuestionPractice type="grammar" pattern={pattern} dayData={dayData} onAnswer={handleQuestionAnswer} />;
+      case 'reading':
+        return <QuestionPractice type="reading" pattern={pattern} dayData={dayData} onAnswer={handleQuestionAnswer} />;
       case 'listening':
         return <ListeningPage pattern={pattern} dayData={dayData} onSubmit={handleListeningSubmit} />;
       case 'conversation':
