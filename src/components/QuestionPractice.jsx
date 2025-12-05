@@ -15,22 +15,21 @@ const bank = {
 
 const QuestionPractice = ({ type, pattern, dayData, onAnswer }) => {
   const limit = pattern?.[type] ?? 0;
-  const answered = dayData?.questionProgress?.[type]?.answered || 0;
+  const answeredCount = dayData?.questionProgress?.[type]?.answered || 0;
   const questionList = bank[type] || [];
-  const question = useMemo(
-    () => questionList[(answered % questionList.length) || 0],
-    [answered, questionList]
-  );
+  const [currentIndex, setCurrentIndex] = useState(answeredCount);
   const [response, setResponse] = useState({});
 
   useEffect(() => {
+    // 日付や種別が変わったら、保存済みの回答数に合わせてインデックスを合わせる
+    setCurrentIndex(answeredCount);
     setResponse({});
-  }, [answered, type, dayData?.date]);
+  }, [type, dayData?.date, questionList.length]);
 
-  useEffect(() => {
-    // 念のため、問題が変わったら必ず選択状態をリセット
-    setResponse({});
-  }, [question?.id]);
+  const question = useMemo(
+    () => questionList[(currentIndex % questionList.length) || 0],
+    [currentIndex, questionList]
+  );
 
   if (!pattern) {
     return (
@@ -61,10 +60,11 @@ const QuestionPractice = ({ type, pattern, dayData, onAnswer }) => {
     );
   }
 
-  const isDone = answered >= limit;
+  const reachedLimit = answeredCount >= limit;
+  const showFinish = reachedLimit && !response.chosen;
 
   const handleSelect = (option) => {
-    if (isDone || response.chosen || !question) return;
+    if (showFinish || response.chosen || !question) return;
     const correct = option === question.correctAnswer;
     onAnswer(type, correct, limit);
     setResponse({
@@ -75,9 +75,9 @@ const QuestionPractice = ({ type, pattern, dayData, onAnswer }) => {
     });
   };
 
-  const nextHint = isDone
-    ? '今日のこのセクションは完了！'
-    : `${answered + 1} / ${limit} 問目`;
+  const displayIndex = Math.min(limit, currentIndex + 1);
+  const nextHint = showFinish ? '今日のこのセクションは完了！' : `${displayIndex} / ${limit} 問目`;
+  const progressValue = limit ? Math.min(100, (Math.min(answeredCount, limit) / limit) * 100) : 0;
 
   return (
     <div className="card question-page">
@@ -93,14 +93,14 @@ const QuestionPractice = ({ type, pattern, dayData, onAnswer }) => {
       <div className="question-hero">
         <div className="bubble">{typeLabels[type]}</div>
         <div className="meter">
-          <div className="meter-fill" style={{ width: `${Math.min(100, (answered / limit) * 100)}%` }} />
+          <div className="meter-fill" style={{ width: `${progressValue}%` }} />
         </div>
         <div className="meter-label">
-          {answered}/{limit} 問
+          {Math.min(answeredCount, limit)}/{limit} 問
         </div>
       </div>
 
-      {isDone ? (
+      {showFinish ? (
         <div className="finish-box strong">今日の{typeLabels[type]}は完了！ よくがんばりました。</div>
       ) : (
         <div className="question-body">
@@ -111,17 +111,24 @@ const QuestionPractice = ({ type, pattern, dayData, onAnswer }) => {
             {question.readingText && <div className="reading-text">{question.readingText}</div>}
           </div>
           <div className="options-grid lively">
-            {question.options.map((option) => (
-              <button
-                key={option}
-                type="button"
-                className={`option-btn ${response.chosen === option ? 'selected' : ''}`}
-                onClick={() => handleSelect(option)}
-                disabled={!!response.chosen}
-              >
-                {option}
-              </button>
-            ))}
+            {question.options.map((option) => {
+              const isSelected = response.chosen === option;
+              const isCorrectOption = !!response.chosen && option === question.correctAnswer;
+              const classNames = ['option-btn'];
+              if (isSelected) classNames.push('selected');
+              if (isCorrectOption) classNames.push('correct-answer');
+              return (
+                <button
+                  key={option}
+                  type="button"
+                  className={classNames.join(' ')}
+                  onClick={() => handleSelect(option)}
+                  disabled={!!response.chosen}
+                >
+                  {option}
+                </button>
+              );
+            })}
           </div>
           {response.chosen && (
             <div className={`feedback card-inline ${response.correct ? 'correct' : 'wrong'}`}>
@@ -133,7 +140,14 @@ const QuestionPractice = ({ type, pattern, dayData, onAnswer }) => {
           )}
           {response.chosen && (
             <div className="next-row">
-              <button type="button" className="btn-primary" onClick={() => setResponse({})}>
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={() => {
+                  setResponse({});
+                  setCurrentIndex((prev) => Math.max(answeredCount, prev + 1));
+                }}
+              >
                 次の問題へ
               </button>
             </div>

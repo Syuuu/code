@@ -407,6 +407,12 @@ h3 {
   background: #ffe7f2;
 }
 
+.option-btn.correct-answer {
+  border-color: #6fcf97;
+  box-shadow: 0 6px 20px rgba(111, 207, 151, 0.18);
+  background: linear-gradient(120deg, #e9fff2, #f8fffb);
+}
+
 .feedback {
   margin-top: 10px;
   padding: 10px 12px;
