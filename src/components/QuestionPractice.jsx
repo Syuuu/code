@@ -27,6 +27,11 @@ const QuestionPractice = ({ type, pattern, dayData, onAnswer }) => {
     setResponse({});
   }, [answered, type, dayData?.date]);
 
+  useEffect(() => {
+    // 念のため、問題が変わったら必ず選択状態をリセット
+    setResponse({});
+  }, [question?.id]);
+
   if (!pattern) {
     return (
       <div className="card">
@@ -59,13 +64,14 @@ const QuestionPractice = ({ type, pattern, dayData, onAnswer }) => {
   const isDone = answered >= limit;
 
   const handleSelect = (option) => {
-    if (isDone || response.chosen) return;
+    if (isDone || response.chosen || !question) return;
     const correct = option === question.correctAnswer;
     onAnswer(type, correct, limit);
     setResponse({
       chosen: option,
       correct,
       questionId: question.id,
+      correctAnswer: question.correctAnswer,
     });
   };
 
@@ -119,7 +125,8 @@ const QuestionPractice = ({ type, pattern, dayData, onAnswer }) => {
           </div>
           {response.chosen && (
             <div className={`feedback card-inline ${response.correct ? 'correct' : 'wrong'}`}>
-              {response.correct ? '正解！' : 'ざんねん！'}
+              <div className="feedback-title">{response.correct ? '正解！すごい！' : 'ざんねん！だいじょうぶ'} </div>
+              <div className="answer-pill">正しいこたえ：{response.correctAnswer}</div>
               <div className="explanation">{question.explanation}</div>
               <div className="muted small">下の「次の問題へ」で、つぎのもんだいへすすみます。</div>
             </div>

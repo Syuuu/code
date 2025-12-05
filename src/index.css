@@ -424,6 +424,24 @@ h3 {
   color: #b15583;
 }
 
+.feedback-title {
+  font-size: 17px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.answer-pill {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: linear-gradient(120deg, #fff0f6, #e0f7ff);
+  border: 1px solid #f2d4e7;
+  color: #6a2f50;
+  font-weight: 700;
+  margin-bottom: 6px;
+  box-shadow: 0 8px 14px rgba(243, 157, 189, 0.18);
+}
+
 .explanation {
   font-weight: 400;
   margin-top: 6px;
