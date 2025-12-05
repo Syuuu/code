@@ -1,11 +1,11 @@
 import React from 'react';
 
 const menuItems = [
-  { key: 'today', label: '今日のミッション' },
-  { key: 'questions', label: '問題（単語・文法・読解）' },
-  { key: 'listening', label: '聴解' },
-  { key: 'conversation', label: '会話トピック' },
-  { key: 'calendar', label: 'カレンダー・進みぐあい' },
+  { key: 'today', label: 'ホーム / 今日のミッション', icon: '🏠' },
+  { key: 'questions', label: '問題（単語・文法・読解）', icon: '✏️' },
+  { key: 'listening', label: '聴解', icon: '🎧' },
+  { key: 'conversation', label: '会話トピック', icon: '💬' },
+  { key: 'calendar', label: 'カレンダー・進みぐあい', icon: '📅' },
 ];
 
 const Sidebar = ({ current, onChange }) => (
@@ -19,6 +19,9 @@ const Sidebar = ({ current, onChange }) => (
             className={`sidebar-btn ${current === item.key ? 'active' : ''}`}
             onClick={() => onChange(item.key)}
           >
+            <span className="menu-icon" aria-hidden>
+              {item.icon}
+            </span>
             {item.label}
           </button>
         </li>

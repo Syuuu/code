@@ -1,9 +1,11 @@
 :root {
   --pink: #f7c5d8;
   --pink-strong: #f39dbd;
-  --bg: #fff7fb;
-  --text: #4a3b45;
+  --bg: #fff6fb;
+  --text: #3f2d38;
   --muted: #7a6f77;
+  --purple-soft: #e6dcff;
+  --peach: #ffd9c8;
 }
 
 * {
@@ -13,7 +15,10 @@
 body {
   margin: 0;
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: var(--bg);
+  background: radial-gradient(circle at 20% 20%, #ffe3ef 0, transparent 35%),
+    radial-gradient(circle at 80% 10%, #ffe9d7 0, transparent 30%),
+    radial-gradient(circle at 10% 80%, #e9e5ff 0, transparent 30%),
+    var(--bg);
   color: var(--text);
   min-width: 1024px;
 }
@@ -23,22 +28,43 @@ body {
 }
 
 .topbar {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
+  gap: 12px;
   padding: 16px 24px;
-  background: linear-gradient(90deg, #f9d9e7, #f7c5d8);
+  background: linear-gradient(120deg, #ffe7f2, #f7c5d8 45%, #ffd9c8);
   color: #4a2d3a;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .topbar-title {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  font-size: 24px;
 }
 
 .topbar-sub {
   font-size: 14px;
+  color: #5c3a4c;
+}
+
+.topbar-badge {
+  background: #ffffffaa;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 700;
+  color: #a63e74;
+  box-shadow: 0 6px 12px rgba(243, 157, 189, 0.25);
 }
 
 .layout {
@@ -51,6 +77,8 @@ body {
 .sidebar {
   position: sticky;
   top: 12px;
+  background: linear-gradient(180deg, #fff8fc, #fff);
+  border: 1px solid #f4d5e3;
 }
 
 .sidebar-title {
@@ -93,15 +121,22 @@ body {
   box-shadow: 0 8px 16px rgba(244, 150, 186, 0.25);
 }
 
+.menu-icon {
+  margin-right: 10px;
+  font-size: 16px;
+}
+
 .main {
   width: 100%;
 }
 
 .card {
   background: #fff;
-  border-radius: 18px;
+  border-radius: 20px;
   padding: 20px;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 16px 24px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
 }
 
 .card + .card {
@@ -129,6 +164,115 @@ h3 {
   border: 1px dashed #f6aac8;
   color: #4a2d3a;
   font-weight: 600;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: 1.7fr 1.2fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.home-grid .card + .card {
+  margin-top: 0;
+}
+
+.mission-card {
+  background: linear-gradient(145deg, rgba(255, 231, 242, 0.9), #ffffff);
+}
+
+.mission-card::after {
+  content: '';
+  position: absolute;
+  inset: 14px;
+  border-radius: 18px;
+  border: 1px dashed #f2bfd5;
+  pointer-events: none;
+}
+
+.mission-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+
+.stickers {
+  display: flex;
+  gap: 8px;
+  font-size: 22px;
+}
+
+.progress-track {
+  margin: 14px 0 10px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #f4d5e3;
+  position: relative;
+  height: 18px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #f7c5d8, #f39dbd);
+  border-radius: 12px;
+  transition: width 0.3s ease;
+}
+
+.progress-label {
+  font-size: 13px;
+  color: #5f4b56;
+  margin-bottom: 12px;
+}
+
+.task-list.fancy {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.task-item.upgraded {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #f3d0de;
+  box-shadow: 0 12px 18px rgba(243, 157, 189, 0.15);
+  position: relative;
+}
+
+.task-item.upgraded.is-done {
+  background: #e3f7e8;
+}
+
+.task-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.btn-link {
+  margin-top: 8px;
+  background: transparent;
+  color: #a63e74;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.helper-card {
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #fff8fc;
+  border: 1px solid #f6aac8;
+}
+
+.helper-title {
+  font-weight: 700;
+  margin-bottom: 4px;
 }
 
 .task-list {
@@ -207,6 +351,11 @@ h3 {
   border-radius: 16px;
   padding: 14px;
   border: 1px solid #f4d5e3;
+}
+
+.focus-card {
+  box-shadow: 0 14px 26px rgba(243, 157, 189, 0.3);
+  border-color: #f39dbd;
 }
 
 .question-header {
@@ -346,42 +495,86 @@ h3 {
   box-shadow: 0 12px 18px rgba(243, 157, 189, 0.25);
 }
 
-.calendar-grid {
+.card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.eyebrow {
+  font-size: 13px;
+  color: #a63e74;
+  margin: 0;
+  font-weight: 800;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.legend-dot.full {
+  background: #ffd7e8;
+  border: 1px solid #f39dbd;
+}
+
+.legend-dot.partial {
+  background: #fff0f6;
+  border: 1px solid #f39dbd;
+}
+
+.calendar-card {
+  background: linear-gradient(180deg, #fff, #fff8fc);
+}
+
+.week-strip {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
   margin-top: 12px;
 }
 
-.calendar-cell {
-  min-height: 60px;
-  border-radius: 12px;
-  background: #fff;
+.week-card {
   border: 1px solid #f4d5e3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
+  border-radius: 14px;
+  padding: 12px;
+  background: #fff;
+  box-shadow: 0 8px 16px rgba(243, 157, 189, 0.18);
 }
 
-.calendar-cell.head {
-  background: #ffe7f2;
-  color: #a63e74;
-}
-
-.calendar-cell.full {
+.week-card.status-full {
   background: #ffd7e8;
-  color: #4a2d3a;
-  border-color: #f39dbd;
 }
 
-.calendar-cell.partial {
+.week-card.status-partial {
   background: #fff0f6;
-  color: #a63e74;
 }
 
-.calendar-cell.empty {
-  color: #bfa9b4;
+.week-card.status-empty {
+  background: #f9f7fb;
+  color: #9a8c93;
+}
+
+.week-date {
+  font-weight: 800;
+  color: #4a2d3a;
+}
+
+.week-stats,
+.week-accuracy {
+  font-size: 13px;
+  color: #5d4b57;
 }
 
 .accuracy-box {
@@ -395,5 +588,9 @@ h3 {
 @media (max-width: 1100px) {
   body {
     min-width: 960px;
+  }
+
+  .home-grid {
+    grid-template-columns: 1fr;
   }
 }

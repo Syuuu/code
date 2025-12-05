@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { vocabQuestions, grammarQuestions, readingQuestions } from '../data/questions';
 
 const typeLabels = {
@@ -13,12 +13,22 @@ const bank = {
   reading: readingQuestions,
 };
 
-const QuestionPractice = ({ pattern, dayData, onAnswer }) => {
+const QuestionPractice = ({ pattern, dayData, onAnswer, focusType }) => {
   const [responses, setResponses] = useState({});
 
   useEffect(() => {
     setResponses({});
   }, [pattern, dayData?.date]);
+
+  const orderedPattern = useMemo(() => {
+    const entries = Object.entries(pattern || {});
+    if (!focusType) return entries;
+    return entries.sort((a, b) => {
+      if (a[0] === focusType) return -1;
+      if (b[0] === focusType) return 1;
+      return 0;
+    });
+  }, [focusType, pattern]);
 
   if (!pattern) {
     return (
@@ -34,7 +44,7 @@ const QuestionPractice = ({ pattern, dayData, onAnswer }) => {
       <h2>問題（単語・文法・読解）</h2>
       <p className="muted">今日のパターンに合わせて出題します。選んだらすぐ正解がわかります。</p>
       <div className="question-columns">
-        {Object.entries(pattern).map(([type, limit]) => {
+        {orderedPattern.map(([type, limit]) => {
           const answered = dayData?.questionProgress?.[type]?.answered || 0;
           const questionList = bank[type] || [];
           const question = questionList[answered % questionList.length];
@@ -56,7 +66,7 @@ const QuestionPractice = ({ pattern, dayData, onAnswer }) => {
           };
 
           return (
-            <div key={type} className="question-card">
+            <div key={type} className={`question-card ${focusType === type ? 'focus-card' : ''}`}>
               <div className="question-header">
                 <span className="chip">{typeLabels[type]}</span>
                 <span className="muted">

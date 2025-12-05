@@ -6,24 +6,12 @@ import QuestionPractice from './components/QuestionPractice';
 import ListeningPage from './components/ListeningPage';
 import ConversationTopics from './components/ConversationTopics';
 import CalendarProgress from './components/CalendarProgress';
+import { dailyPatterns, patternLabel, weekSchedule } from './constants/patterns';
 import { loadDayData, markTaskDone, recordQuestionResult, updateListeningRecord } from './utils/storage';
-
-const dailyPatterns = {
-  A: { vocab: 5, reading: 2 },
-  B: { grammar: 5, listening: 2 },
-  C: { vocab: 5, grammar: 5 },
-  D: { reading: 2, listening: 1 },
-};
-
-const weekSchedule = ['C', 'A', 'B', 'C', 'D', 'A', 'B'];
-
-const patternLabel = (key) => {
-  const map = { vocab: '単語', grammar: '文法', reading: '読解', listening: '聴解' };
-  return map[key] || key;
-};
 
 const App = () => {
   const [currentView, setCurrentView] = useState('today');
+  const [focusType, setFocusType] = useState(null);
   const [patternKey, setPatternKey] = useState('A');
   const [dayData, setDayData] = useState(null);
 
@@ -54,10 +42,30 @@ const App = () => {
     setDayData((prev) => markTaskDone(prev, 'conversationDone', { conversationTopicId: topicId }));
   };
 
+  const handleStartFromToday = (type) => {
+    if (type === 'listening') {
+      setCurrentView('listening');
+      setFocusType(null);
+    } else if (type === 'conversation') {
+      setCurrentView('conversation');
+      setFocusType(null);
+    } else {
+      setCurrentView('questions');
+      setFocusType(type);
+    }
+  };
+
   const renderContent = () => {
     switch (currentView) {
       case 'questions':
-        return <QuestionPractice pattern={questionPattern} dayData={dayData} onAnswer={handleQuestionAnswer} />;
+        return (
+          <QuestionPractice
+            pattern={questionPattern}
+            dayData={dayData}
+            onAnswer={handleQuestionAnswer}
+            focusType={focusType}
+          />
+        );
       case 'listening':
         return <ListeningPage pattern={pattern} dayData={dayData} onSubmit={handleListeningSubmit} />;
       case 'conversation':
@@ -66,7 +74,17 @@ const App = () => {
         return <CalendarProgress />;
       case 'today':
       default:
-        return <TodayDashboard patternKey={patternKey} pattern={pattern} dayData={dayData} />;
+        return (
+          <div className="home-grid">
+            <TodayDashboard
+              patternKey={patternKey}
+              pattern={pattern}
+              dayData={dayData}
+              onStart={handleStartFromToday}
+            />
+            <CalendarProgress compact refreshKey={`${dayData?.date}-${dayData?.totalCount}`} />
+          </div>
+        );
     }
   };
 
