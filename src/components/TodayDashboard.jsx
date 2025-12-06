@@ -34,71 +34,92 @@ const TodayDashboard = ({ patternKey, pattern, dayData, onStart }) => {
   const progressPercent = Math.round((doneCount / totalRequired) * 100);
 
   return (
-    <div className="card mission-card">
-      <div className="mission-header">
+    <div className="card mission-card spacious">
+      <div className="mission-hero">
         <div>
           <p className="eyebrow">今日のミッション</p>
-          <h2>
+          <h2 className="mission-title">
             パターン{patternKey} ：{tasks.map((t) => `${t.title}${t.count}問`).join(' ＋ ')} ＋ 会話1トピック
           </h2>
-          <p className="muted">30分くらいでやさしく終わるコース。クリックですぐ問題へ。</p>
-        </div>
-        <div className="stickers">
-          <span className="sticker">🌸</span>
-          <span className="sticker">🎀</span>
-          <span className="sticker">✨</span>
-        </div>
-      </div>
-
-      <div className="mission-progress-row">
-        <div className="progress-chip">
-          <div className="chip-title">進みぐあい</div>
-          <div className="chip-main">{doneCount === totalRequired ? '全部クリア！' : `${doneCount}/${totalRequired} クリア`}</div>
-          <div className="chip-sub">
-            {doneCount === totalRequired ? 'おつかれさま！' : `あと${totalRequired - doneCount}こで完了`}
+          <div className="mission-tags">
+            <span className="tag-soft">やさしい30分コース</span>
+            <span className="tag-soft">クリックですぐ練習</span>
           </div>
+          <p className="muted">深呼吸してからゆっくりはじめましょう。落ち着いたペースで大丈夫。</p>
+        </div>
+        <div className="hero-pill">
+          <div className="pill-title">今日の進み</div>
+          <div className="pill-number">{doneCount}/{totalRequired}</div>
+          <div className="pill-sub">{doneCount === totalRequired ? '全部クリア！' : `あと${totalRequired - doneCount}ステップ`}</div>
           <div className="progress-track mini">
             <div className="progress-bar" style={{ width: `${progressPercent}%` }} />
           </div>
         </div>
-        <div className="progress-steps">
-          {steps.map((step, idx) => (
-            <div key={step.type} className={`progress-step ${step.done ? 'done' : ''}`}>
-              <div className="step-dot">{step.done ? '✓' : idx + 1}</div>
-              <div className="step-label">{step.title}</div>
-            </div>
-          ))}
-        </div>
       </div>
 
-      <div className="task-list fancy">
-        {tasks.map((task) => (
-          <div key={task.type} className={`task-item upgraded ${task.done ? 'is-done' : ''}`}>
-            <div className="task-top">
-              <div>
-                <div className="task-title">{task.title}</div>
-                <div className="task-detail">{task.count}問</div>
-              </div>
-              <div className={`status-chip ${task.done ? 'done' : 'pending'}`}>{statusLabel(task.done)}</div>
-            </div>
-            <button type="button" className="btn-link" onClick={() => onStart(task.type)}>
-              この{task.title}へすすむ
-            </button>
-          </div>
-        ))}
-        <div className={`task-item upgraded ${dayData?.conversationDone ? 'is-done' : ''}`}>
-          <div className="task-top">
+      <div className="mission-grid">
+        <div className="mission-progress-panel">
+          <div className="panel-header">
             <div>
-              <div className="task-title">会話</div>
-              <div className="task-detail">1トピック</div>
+              <div className="panel-label">ステップ順</div>
+              <div className="panel-title">ひとつずつクリアしよう</div>
             </div>
-            <div className={`status-chip ${dayData?.conversationDone ? 'done' : 'pending'}`}>
-              {statusLabel(dayData?.conversationDone)}
+            <div className="stickers">
+              <span className="sticker">🌸</span>
+              <span className="sticker">🎀</span>
+              <span className="sticker">✨</span>
             </div>
           </div>
-          <button type="button" className="btn-link" onClick={() => onStart('conversation')}>
-            今日のトピックをえらぶ
-          </button>
+          <div className="progress-steps roomy">
+            {steps.map((step, idx) => (
+              <div key={step.type} className={`progress-step ${step.done ? 'done' : ''}`}>
+                <div className="step-dot">{step.done ? '✓' : idx + 1}</div>
+                <div>
+                  <div className="step-label strong">{step.title}</div>
+                  <div className="step-hint">{step.done ? '完了！' : 'クリックで開始'}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mission-task-panel">
+          <div className="panel-header">
+            <div>
+              <div className="panel-label">やることリスト</div>
+              <div className="panel-title">ふたりで一歩ずつ</div>
+            </div>
+          </div>
+          <div className="task-list fancy roomy">
+            {tasks.map((task) => (
+              <div key={task.type} className={`task-item upgraded ${task.done ? 'is-done' : ''}`}>
+                <div className="task-top">
+                  <div>
+                    <div className="task-title">{task.title}</div>
+                    <div className="task-detail">{task.count}問</div>
+                  </div>
+                  <div className={`status-chip ${task.done ? 'done' : 'pending'}`}>{statusLabel(task.done)}</div>
+                </div>
+                <button type="button" className="btn-link" onClick={() => onStart(task.type)}>
+                  この{task.title}へすすむ
+                </button>
+              </div>
+            ))}
+            <div className={`task-item upgraded ${dayData?.conversationDone ? 'is-done' : ''}`}>
+              <div className="task-top">
+                <div>
+                  <div className="task-title">会話</div>
+                  <div className="task-detail">1トピック</div>
+                </div>
+                <div className={`status-chip ${dayData?.conversationDone ? 'done' : 'pending'}`}>
+                  {statusLabel(dayData?.conversationDone)}
+                </div>
+              </div>
+              <button type="button" className="btn-link" onClick={() => onStart('conversation')}>
+                今日のトピックをえらぶ
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
