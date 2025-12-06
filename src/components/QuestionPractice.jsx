@@ -1,15 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { vocabQuestions, grammarQuestions, readingQuestions } from '../data/questions';
+import { mojiQuestions, readingQuestions } from '../data/questions';
 
 const typeLabels = {
-  vocab: '単語',
-  grammar: '文法',
+  moji: '文字・語彙',
   reading: '読解',
 };
 
 const bank = {
-  vocab: vocabQuestions,
-  grammar: grammarQuestions,
+  moji: mojiQuestions,
   reading: readingQuestions,
 };
 
@@ -21,7 +19,6 @@ const QuestionPractice = ({ type, pattern, dayData, onAnswer }) => {
   const [response, setResponse] = useState({});
 
   useEffect(() => {
-    // 日付や種別が変わったら、保存済みの回答数に合わせてインデックスを合わせる
     setCurrentIndex(answeredCount);
     setResponse({});
   }, [type, dayData?.date, questionList.length]);

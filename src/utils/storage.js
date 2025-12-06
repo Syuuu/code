@@ -26,8 +26,7 @@ export const loadDayData = (patternKey) =>
     const fresh = {
       date: key.replace(PREFIX, ''),
       pattern: patternKey,
-      vocabDone: false,
-      grammarDone: false,
+      mojiDone: false,
       readingDone: false,
       listeningDone: false,
       conversationDone: false,
@@ -41,8 +40,7 @@ export const loadDayData = (patternKey) =>
   }) || {
     date: '',
     pattern: patternKey,
-    vocabDone: false,
-    grammarDone: false,
+    mojiDone: false,
     readingDone: false,
     listeningDone: false,
     conversationDone: false,

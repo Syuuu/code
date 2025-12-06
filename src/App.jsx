@@ -42,16 +42,14 @@ const App = () => {
     } else if (type === 'conversation') {
       setCurrentView('conversation');
     } else {
-      setCurrentView(type || 'vocab');
+      setCurrentView(type || 'moji');
     }
   };
 
   const renderContent = () => {
     switch (currentView) {
-      case 'vocab':
-        return <QuestionPractice type="vocab" pattern={pattern} dayData={dayData} onAnswer={handleQuestionAnswer} />;
-      case 'grammar':
-        return <QuestionPractice type="grammar" pattern={pattern} dayData={dayData} onAnswer={handleQuestionAnswer} />;
+      case 'moji':
+        return <QuestionPractice type="moji" pattern={pattern} dayData={dayData} onAnswer={handleQuestionAnswer} />;
       case 'reading':
         return <QuestionPractice type="reading" pattern={pattern} dayData={dayData} onAnswer={handleQuestionAnswer} />;
       case 'listening':

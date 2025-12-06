@@ -90,7 +90,7 @@ const TodayDashboard = ({ patternKey, pattern, dayData, onStart }) => {
         <div className="helper-card">
           <div className="helper-title">わからないときは？</div>
           <div className="muted">無理しなくて大丈夫。わからなかったところを二人で声に出して読みましょう。</div>
-          <button type="button" className="btn-primary" onClick={() => onStart(tasks[0]?.type || 'vocab')}>
+          <button type="button" className="btn-primary" onClick={() => onStart(tasks[0]?.type || 'moji')}>
             まずは1問やってみる
           </button>
         </div>

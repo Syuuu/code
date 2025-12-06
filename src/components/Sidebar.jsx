@@ -1,9 +1,8 @@
 import React from 'react';
 
-const menuItems = [
-  { key: 'today', label: 'ホーム / 今日のミッション', icon: '🏠' },
-  { key: 'vocab', label: '単語', icon: '🔤' },
-  { key: 'grammar', label: '文法', icon: '📘' },
+const menu = [
+  { key: 'today', label: '今日のミッション', icon: '🎯' },
+  { key: 'moji', label: '文字・語彙', icon: '🔤' },
   { key: 'reading', label: '読解', icon: '📖' },
   { key: 'listening', label: '聴解', icon: '🎧' },
   { key: 'conversation', label: '会話トピック', icon: '💬' },
@@ -11,25 +10,22 @@ const menuItems = [
 ];
 
 const Sidebar = ({ current, onChange }) => (
-  <nav className="sidebar card">
-    <div className="sidebar-title">メニュー</div>
-    <ul>
-      {menuItems.map((item) => (
-        <li key={item.key}>
-          <button
-            type="button"
-            className={`sidebar-btn ${current === item.key ? 'active' : ''}`}
-            onClick={() => onChange(item.key)}
-          >
-            <span className="menu-icon" aria-hidden>
-              {item.icon}
-            </span>
-            {item.label}
-          </button>
-        </li>
+  <aside className="sidebar">
+    <h1 className="logo">N2 勉強ルーム</h1>
+    <nav>
+      {menu.map((item) => (
+        <button
+          key={item.key}
+          type="button"
+          className={`nav-item ${current === item.key ? 'active' : ''}`}
+          onClick={() => onChange(item.key)}
+        >
+          <span className="nav-icon">{item.icon}</span>
+          {item.label}
+        </button>
       ))}
-    </ul>
-  </nav>
+    </nav>
+  </aside>
 );
 
 export default Sidebar;

@@ -1,13 +1,13 @@
 export const dailyPatterns = {
-  A: { vocab: 5, reading: 2 },
-  B: { grammar: 5, listening: 2 },
-  C: { vocab: 5, grammar: 5 },
+  A: { moji: 6, reading: 2 },
+  B: { moji: 6, listening: 2 },
+  C: { moji: 8, reading: 1 },
   D: { reading: 2, listening: 1 },
 };
 
 export const weekSchedule = ['C', 'A', 'B', 'C', 'D', 'A', 'B'];
 
 export const patternLabel = (key) => {
-  const map = { vocab: '単語', grammar: '文法', reading: '読解', listening: '聴解' };
+  const map = { moji: '文字・語彙', reading: '読解', listening: '聴解' };
   return map[key] || key;
 };
