@@ -219,12 +219,107 @@ h3 {
   overflow: hidden;
 }
 
+.progress-track.mini {
+  height: 10px;
+  margin: 8px 0 0;
+  background: linear-gradient(90deg, #ffe3ef, #fff6fb);
+  border: 1px solid #f8cfe1;
+}
+
 .progress-bar {
   position: absolute;
   inset: 0;
   background: linear-gradient(90deg, #f7c5d8, #f39dbd);
   border-radius: 12px;
   transition: width 0.3s ease;
+}
+
+.mission-progress-row {
+  display: flex;
+  gap: 14px;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.progress-chip {
+  background: linear-gradient(135deg, #ffe8f2, #ffd1e5);
+  border: 1px solid #f3c3d7;
+  border-radius: 16px;
+  padding: 12px 16px;
+  box-shadow: 0 12px 22px rgba(243, 157, 189, 0.18);
+  min-width: 230px;
+}
+
+.chip-title {
+  font-size: 13px;
+  color: #76465f;
+  letter-spacing: 0.02em;
+}
+
+.chip-main {
+  font-weight: 700;
+  font-size: 18px;
+  color: #7b2f55;
+  margin-top: 6px;
+}
+
+.chip-sub {
+  font-size: 13px;
+  color: #6c4b5d;
+}
+
+.progress-steps {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.progress-step {
+  flex: 1 1 130px;
+  background: #fff;
+  border: 1px solid #f2d3e2;
+  border-radius: 14px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 18px rgba(120, 56, 100, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.progress-step:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 20px rgba(120, 56, 100, 0.12);
+}
+
+.progress-step.done {
+  background: linear-gradient(135deg, #e9f8ef, #d5f1df);
+  border-color: #b5e3c4;
+}
+
+.step-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f9d9ea, #f7b8d5);
+  color: #6c2b4f;
+  font-weight: 700;
+  box-shadow: 0 6px 12px rgba(243, 157, 189, 0.35);
+}
+
+.progress-step.done .step-dot {
+  background: linear-gradient(135deg, #b6e9c7, #8dd7a9);
+  color: #1b6a3c;
+  box-shadow: 0 6px 12px rgba(85, 170, 124, 0.35);
+}
+
+.step-label {
+  font-weight: 600;
+  color: #5b4257;
 }
 
 .progress-label {

@@ -22,10 +22,15 @@ const TodayDashboard = ({ patternKey, pattern, dayData, onStart }) => {
     return questionDone && dayData?.conversationDone;
   }, [dayData?.conversationDone, tasks]);
 
+  const steps = useMemo(
+    () => [...tasks, { type: 'conversation', title: '会話', done: dayData?.conversationDone }],
+    [dayData?.conversationDone, tasks]
+  );
+
   if (!pattern) return null;
 
-  const totalRequired = tasks.length + 1;
-  const doneCount = tasks.filter((t) => t.done).length + (dayData?.conversationDone ? 1 : 0);
+  const totalRequired = steps.length;
+  const doneCount = steps.filter((t) => t.done).length;
   const progressPercent = Math.round((doneCount / totalRequired) * 100);
 
   return (
@@ -45,9 +50,25 @@ const TodayDashboard = ({ patternKey, pattern, dayData, onStart }) => {
         </div>
       </div>
 
-      <div className="progress-track">
-        <div className="progress-bar" style={{ width: `${progressPercent}%` }} />
-        <div className="progress-label">{doneCount}/{totalRequired} 完了</div>
+      <div className="mission-progress-row">
+        <div className="progress-chip">
+          <div className="chip-title">進みぐあい</div>
+          <div className="chip-main">{doneCount === totalRequired ? '全部クリア！' : `${doneCount}/${totalRequired} クリア`}</div>
+          <div className="chip-sub">
+            {doneCount === totalRequired ? 'おつかれさま！' : `あと${totalRequired - doneCount}こで完了`}
+          </div>
+          <div className="progress-track mini">
+            <div className="progress-bar" style={{ width: `${progressPercent}%` }} />
+          </div>
+        </div>
+        <div className="progress-steps">
+          {steps.map((step, idx) => (
+            <div key={step.type} className={`progress-step ${step.done ? 'done' : ''}`}>
+              <div className="step-dot">{step.done ? '✓' : idx + 1}</div>
+              <div className="step-label">{step.title}</div>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="task-list fancy">
