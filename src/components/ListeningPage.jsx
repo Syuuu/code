@@ -15,6 +15,7 @@ const ListeningPage = ({ pattern, dayData, onSubmit }) => {
 
   const task = listeningTasks[0];
   const totalQuestions = task.recommendedQuestionCount * pattern.listening;
+  const perSet = task.recommendedQuestionCount;
 
   const handleSubmit = () => {
     const value = Number(input);
@@ -23,16 +24,31 @@ const ListeningPage = ({ pattern, dayData, onSubmit }) => {
   };
 
   return (
-    <div className="card">
-      <h2>聴解</h2>
-      <div className="listening-card">
-        <h3>{task.title}</h3>
-        <p>{task.description}</p>
-        <a className="link" href={task.videoUrl} target="_blank" rel="noreferrer">
-          動画をひらく
-        </a>
-        <p className="muted">めやす：{task.recommendedQuestionCount}問 × {pattern.listening}セット</p>
+    <div className="card listening-page">
+      <div className="card-heading">
+        <div>
+          <p className="eyebrow">聴解</p>
+          <h2>耳をつかってれんしゅう</h2>
+          <p className="muted">今日は {pattern.listening} セット、合計 {totalQuestions} 問にチャレンジ</p>
+        </div>
+        <div className="pill soft">めやす {perSet}問 × {pattern.listening}セット</div>
       </div>
+
+      <div className="listening-hero">
+        <div>
+          <h3>{task.title}</h3>
+          <p>{task.description}</p>
+          <a className="btn-ghost" href={task.videoUrl} target="_blank" rel="noreferrer">
+            動画をひらく
+          </a>
+        </div>
+        <div className="metric-card">
+          <div className="metric-label">今日のノルマ</div>
+          <div className="metric-number">{totalQuestions}問</div>
+          <div className="metric-sub">1セット {perSet}問 を {pattern.listening}回</div>
+        </div>
+      </div>
+
       <div className="listening-form">
         <label htmlFor="listeningCorrect">今日は何問 正解しましたか？</label>
         <input
@@ -46,7 +62,9 @@ const ListeningPage = ({ pattern, dayData, onSubmit }) => {
         <button type="button" className="btn-primary" onClick={handleSubmit}>
           記録する
         </button>
-        {dayData?.listeningDone && <div className="success-card">よくがんばりました。分からなかったところは、またいっしょに確認しましょう。</div>}
+        {dayData?.listeningDone && (
+          <div className="success-card">よくがんばりました。分からなかったところは、またいっしょに確認しましょう。</div>
+        )}
       </div>
     </div>
   );

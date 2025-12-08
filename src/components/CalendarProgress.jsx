@@ -1,6 +1,12 @@
 import React, { useMemo } from 'react';
 import { dailyPatterns } from '../constants/patterns';
-import { aggregateAccuracy, readAllStudyData } from '../utils/storage';
+import { conversationTopics } from '../data/conversationTopics';
+import {
+  aggregateAccuracy,
+  aggregateTypeAccuracy,
+  readAllStudyData,
+  summarizeDayTypes,
+} from '../utils/storage';
 
 const formatDateStr = (dateObj) =>
   `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
@@ -13,6 +19,11 @@ const CalendarProgress = ({ compact = false, refreshKey }) => {
     [refreshKey]
   );
   const accuracyData = useMemo(() => aggregateAccuracy(), [refreshKey]);
+  const typeAccuracy = useMemo(() => aggregateTypeAccuracy(), [refreshKey]);
+  const topicMap = useMemo(
+    () => Object.fromEntries(conversationTopics.map((t) => [t.id, t.title])),
+    []
+  );
 
   const dataMap = useMemo(() => Object.fromEntries(allData.map((item) => [item.date, item])), [allData]);
 
@@ -31,6 +42,7 @@ const CalendarProgress = ({ compact = false, refreshKey }) => {
       const requiredCount = requiredTypes.length + 1;
       const status = data ? (doneCount >= requiredCount ? 'full' : doneCount > 0 ? 'partial' : 'empty') : 'empty';
       const accuracy = data?.totalCount > 0 ? Math.round((data.correctCount / data.totalCount) * 100) : null;
+      const typeStats = summarizeDayTypes(data);
       arr.push({
         dateObj: d,
         data,
@@ -39,6 +51,7 @@ const CalendarProgress = ({ compact = false, refreshKey }) => {
         doneCount,
         requiredCount,
         accuracy,
+        typeStats,
       });
     }
     return arr;
@@ -51,6 +64,24 @@ const CalendarProgress = ({ compact = false, refreshKey }) => {
     return '今は土台をつくる時期です。ゆっくりで大丈夫ですよ。';
   };
 
+  const renderTypeChips = (typeStats) => (
+    <div className="type-chips">
+      {['moji', 'reading', 'listening'].map((type) => {
+        const stats = typeStats?.[type];
+        if (!stats) return null;
+        const accuracy = stats.answered > 0 ? Math.round((stats.correct / stats.answered) * 100) : 0;
+        const labelMap = { moji: '文字・語彙', reading: '読解', listening: '聴解' };
+        return (
+          <div key={type} className="type-chip">
+            <span className="type-chip-label">{labelMap[type]}</span>
+            <span className="type-chip-num">{stats.correct}/{stats.answered} 正解</span>
+            <span className="type-chip-acc">{accuracy}%</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+
   const renderWeekCards = () => (
     <div className="week-strip">
       {weeklyDays.map((item) => (
@@ -58,6 +89,10 @@ const CalendarProgress = ({ compact = false, refreshKey }) => {
           <div className="week-date">{item.label}</div>
           <div className="week-stats">{item.status === 'empty' ? 'まだ' : `${item.doneCount}/${item.requiredCount}タスク`}</div>
           <div className="week-accuracy">{item.accuracy !== null ? `正解率 ${item.accuracy}%` : '正解率 ー'}</div>
+          {renderTypeChips(item.typeStats)}
+          {item.data?.conversationTopicId && (
+            <div className="topic-pill">会話：{topicMap[item.data.conversationTopicId] || '選択済み'}</div>
+          )}
         </div>
       ))}
     </div>
@@ -83,6 +118,20 @@ const CalendarProgress = ({ compact = false, refreshKey }) => {
           </div>
           <div className="muted">{accuracyMessage()}</div>
         </div>
+        <div className="type-summary">
+          {['moji', 'reading', 'listening'].map((type) => {
+            const stats = typeAccuracy[type];
+            if (!stats) return null;
+            const labelMap = { moji: '文字・語彙', reading: '読解', listening: '聴解' };
+            return (
+              <div key={type} className="type-summary-card">
+                <div className="type-summary-title">{labelMap[type]}</div>
+                <div className="type-summary-numbers">{stats.correct}/{stats.answered} 正解</div>
+                <div className="type-summary-acc">正解率 {stats.accuracy}%</div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   }
@@ -105,6 +154,20 @@ const CalendarProgress = ({ compact = false, refreshKey }) => {
           さいきんの正解率：{accuracyData.accuracy}%（{accuracyData.totalCorrect}/{accuracyData.totalAnswered}）
         </div>
         <div className="muted">{accuracyMessage()}</div>
+      </div>
+      <div className="type-summary">
+        {['moji', 'reading', 'listening'].map((type) => {
+          const stats = typeAccuracy[type];
+          if (!stats) return null;
+          const labelMap = { moji: '文字・語彙', reading: '読解', listening: '聴解' };
+          return (
+            <div key={type} className="type-summary-card">
+              <div className="type-summary-title">{labelMap[type]}</div>
+              <div className="type-summary-numbers">{stats.correct}/{stats.answered} 正解</div>
+              <div className="type-summary-acc">正解率 {stats.accuracy}%</div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

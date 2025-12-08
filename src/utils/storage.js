@@ -122,3 +122,52 @@ export const aggregateAccuracy = () => {
   const accuracy = totalAnswered > 0 ? Math.round((totalCorrect / totalAnswered) * 100) : 0;
   return { totalCorrect, totalAnswered, accuracy };
 };
+
+export const summarizeDayTypes = (day) => {
+  const stats = {};
+  const progress = day?.questionProgress || {};
+
+  Object.entries(progress).forEach(([type, value]) => {
+    stats[type] = {
+      answered: value?.answered || 0,
+      correct: value?.correct || 0,
+    };
+  });
+
+  if (day?.listeningRecord) {
+    const { correct = 0, total = 0 } = day.listeningRecord;
+    stats.listening = {
+      answered: (stats.listening?.answered || 0) + total,
+      correct: (stats.listening?.correct || 0) + correct,
+    };
+  }
+
+  return stats;
+};
+
+export const aggregateTypeAccuracy = () => {
+  const items = readAllStudyData();
+  const totals = {};
+
+  items.forEach((day) => {
+    const stats = summarizeDayTypes(day);
+    Object.entries(stats).forEach(([type, value]) => {
+      const current = totals[type] || { answered: 0, correct: 0 };
+      totals[type] = {
+        answered: current.answered + (value.answered || 0),
+        correct: current.correct + (value.correct || 0),
+      };
+    });
+  });
+
+  const withAccuracy = Object.fromEntries(
+    Object.entries(totals).map(([type, value]) => {
+      const answered = value.answered || 0;
+      const correct = value.correct || 0;
+      const accuracy = answered > 0 ? Math.round((correct / answered) * 100) : 0;
+      return [type, { ...value, accuracy }];
+    })
+  );
+
+  return withAccuracy;
+};

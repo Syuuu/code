@@ -191,6 +191,11 @@ h3 {
   padding: 28px;
 }
 
+.mission-card.luxe {
+  border: 1px solid #f2d4e7;
+  box-shadow: 0 22px 44px rgba(243, 157, 189, 0.18);
+}
+
 .mission-card::after {
   content: '';
   position: absolute;
@@ -208,10 +213,21 @@ h3 {
   margin-bottom: 18px;
 }
 
+.mission-hero.wide {
+  padding: 6px 4px 10px;
+  align-items: center;
+}
+
 .mission-title {
   font-size: 26px;
   line-height: 1.3;
   margin: 6px 0 10px;
+}
+
+.mission-sub {
+  font-size: 18px;
+  color: #5b3b4c;
+  margin-bottom: 12px;
 }
 
 .mission-tags {
@@ -230,6 +246,10 @@ h3 {
   border: 1px solid #f6c6dd;
 }
 
+.mission-card .tag-soft {
+  font-size: 13px;
+}
+
 .hero-pill {
   min-width: 210px;
   background: linear-gradient(150deg, #ffe5f1, #ffd7ea, #ffeef7);
@@ -237,6 +257,11 @@ h3 {
   padding: 14px 16px;
   box-shadow: 0 20px 30px rgba(243, 157, 189, 0.22);
   border: 1px solid #f5c2da;
+}
+
+.hero-pill.big {
+  min-width: 240px;
+  padding: 18px 20px;
 }
 
 .pill-title {
@@ -264,6 +289,10 @@ h3 {
   margin-bottom: 12px;
 }
 
+.mission-grid.split {
+  gap: 20px;
+}
+
 @media (max-width: 1100px) {
   .mission-grid {
     grid-template-columns: 1fr;
@@ -277,6 +306,11 @@ h3 {
   padding: 18px;
   border: 1px solid #f2d3e2;
   box-shadow: 0 12px 20px rgba(243, 157, 189, 0.12);
+}
+
+.mission-progress-panel.soft,
+.mission-task-panel.soft {
+  background: linear-gradient(180deg, #fff, #fff6fa);
 }
 
 .panel-header {
@@ -340,6 +374,10 @@ h3 {
   gap: 12px;
 }
 
+.progress-steps.luxe {
+  padding: 6px 2px;
+}
+
 .progress-step {
   flex: 1 1 130px;
   background: #fff;
@@ -365,6 +403,17 @@ h3 {
 
 .step-hint {
   color: #725d6a;
+  font-size: 12px;
+}
+
+.step-count {
+  margin-left: auto;
+  font-weight: 700;
+  color: #8a4f68;
+  background: #fff4fa;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #f4d5e3;
   font-size: 12px;
 }
 
@@ -411,6 +460,14 @@ h3 {
 
 .task-list.fancy.roomy {
   gap: 16px;
+}
+
+.task-item.wide {
+  grid-column: span 2;
+}
+
+.task-actions {
+  margin-top: 6px;
 }
 
 .task-item.upgraded {
@@ -501,6 +558,16 @@ h3 {
   padding: 12px 14px;
   color: #4a2d3a;
   border: 1px solid #f7c5d8;
+}
+
+.success-card.big {
+  padding: 16px 18px;
+  font-size: 16px;
+}
+
+.helper-card.wide {
+  margin-top: 18px;
+  padding: 16px 18px;
 }
 
 .btn-primary {
@@ -648,11 +715,63 @@ h3 {
   color: #2d7a42;
 }
 
-.listening-card {
+.listening-page {
+  background: linear-gradient(155deg, rgba(255, 226, 241, 0.8), #ffffff 40%, rgba(200, 232, 255, 0.4));
+}
+
+.listening-card,
+.listening-hero {
   background: #fff8fc;
   border-radius: 16px;
   padding: 14px;
   border: 1px solid #f4d5e3;
+}
+
+.listening-hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.btn-ghost {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #f2bfd5;
+  background: #fff;
+  color: #a63e74;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 10px 20px rgba(243, 157, 189, 0.18);
+}
+
+.metric-card {
+  min-width: 180px;
+  background: linear-gradient(140deg, #ffe5f1, #fff7fb);
+  border-radius: 16px;
+  padding: 12px 14px;
+  border: 1px solid #f5c2da;
+  text-align: right;
+  box-shadow: 0 16px 26px rgba(243, 157, 189, 0.22);
+}
+
+.metric-label {
+  font-size: 12px;
+  color: #6a3f57;
+}
+
+.metric-number {
+  font-size: 28px;
+  font-weight: 900;
+  color: #6c2b4f;
+  line-height: 1.1;
+}
+
+.metric-sub {
+  font-size: 12px;
+  color: #5d4b57;
 }
 
 .listening-form {
@@ -762,6 +881,40 @@ h3 {
   box-shadow: 0 8px 16px rgba(243, 157, 189, 0.18);
 }
 
+.type-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.type-chip {
+  background: #fff;
+  border: 1px solid #f2d3e2;
+  border-radius: 12px;
+  padding: 6px 10px;
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  font-weight: 700;
+  color: #5b4257;
+  box-shadow: 0 6px 12px rgba(243, 157, 189, 0.15);
+}
+
+.type-chip-label {
+  color: #a63e74;
+}
+
+.type-chip-num {
+  color: #5d4b57;
+  font-size: 13px;
+}
+
+.type-chip-acc {
+  color: #2d7a42;
+  font-size: 12px;
+}
+
 .week-card.status-full {
   background: #ffd7e8;
 }
@@ -792,6 +945,50 @@ h3 {
   border-radius: 12px;
   padding: 12px;
   border: 1px solid #f4d5e3;
+}
+
+.type-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.type-summary-card {
+  background: #fff;
+  border: 1px solid #f2d3e2;
+  border-radius: 14px;
+  padding: 10px 12px;
+  box-shadow: 0 10px 18px rgba(243, 157, 189, 0.16);
+}
+
+.type-summary-title {
+  font-weight: 800;
+  color: #6e3d55;
+  margin-bottom: 4px;
+}
+
+.type-summary-numbers {
+  font-weight: 700;
+  color: #5d4b57;
+}
+
+.type-summary-acc {
+  font-size: 12px;
+  color: #2d7a42;
+}
+
+.topic-pill {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff4fa;
+  border: 1px solid #f4d5e3;
+  border-radius: 12px;
+  padding: 6px 10px;
+  color: #6a3f57;
+  font-weight: 700;
 }
 
 .question-page {
