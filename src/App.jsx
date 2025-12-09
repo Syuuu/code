@@ -7,7 +7,13 @@ import ListeningPage from './components/ListeningPage';
 import ConversationTopics from './components/ConversationTopics';
 import CalendarProgress from './components/CalendarProgress';
 import { dailyPatterns, patternLabel, weekSchedule } from './constants/patterns';
-import { loadDayData, markTaskDone, recordQuestionResult, updateListeningRecord } from './utils/storage';
+import {
+  formatDateKey,
+  loadDayData,
+  markTaskDone,
+  recordQuestionResult,
+  updateListeningRecord,
+} from './utils/storage';
 
 const App = () => {
   const [currentView, setCurrentView] = useState('today');
@@ -15,12 +21,21 @@ const App = () => {
   const [dayData, setDayData] = useState(null);
 
   useEffect(() => {
-    const today = new Date();
-    const weekday = today.getDay();
-    const key = weekSchedule[weekday] || 'A';
-    setPatternKey(key);
-    const loaded = loadDayData(key);
-    setDayData(loaded);
+    const syncToday = () => {
+      const today = new Date();
+      const weekday = today.getDay();
+      const nextPattern = weekSchedule[weekday] || 'A';
+      const todayDate = formatDateKey().replace('studyData_', '');
+      setPatternKey(nextPattern);
+      setDayData((current) => {
+        if (current?.date === todayDate && current?.pattern === nextPattern) return current;
+        return loadDayData(nextPattern);
+      });
+    };
+
+    syncToday();
+    const timer = setInterval(syncToday, 60 * 1000);
+    return () => clearInterval(timer);
   }, []);
 
   const pattern = useMemo(() => dailyPatterns[patternKey], [patternKey]);
