@@ -71,4 +71,52 @@ export const conversationTopics = [
     title: '新しくやってみたい趣味',
     description: 'どうしてその趣味に興味を持ちましたか？ いつ始めてみたいですか？',
   },
+  {
+    id: 'topic_013',
+    category: 'travel',
+    title: '週末に行きたい近場のスポット',
+    description: '電車やバスで行けるお気に入りの場所は？ 何をしたいですか？',
+  },
+  {
+    id: 'topic_014',
+    category: 'work',
+    title: '理想の働き方',
+    description: 'リモートがいいですか？ オフィスがいいですか？ 時間帯や環境の希望は？',
+  },
+  {
+    id: 'topic_015',
+    category: 'future',
+    title: '二人の記念日の過ごし方',
+    description: 'どんなプレゼントやイベントにしたいですか？ 思い出に残るアイデアは？',
+  },
+  {
+    id: 'topic_016',
+    category: 'daily',
+    title: '朝のルーティン',
+    description: '起きてから出かけるまで、何をしていますか？ 変えたいことはありますか？',
+  },
+  {
+    id: 'topic_017',
+    category: 'food',
+    title: '好きな日本の季節の料理',
+    description: '春夏秋冬の食べ物で好きなものは？ どうして好きですか？',
+  },
+  {
+    id: 'topic_018',
+    category: 'culture',
+    title: '行ってみたい日本の祭り',
+    description: 'どの地域の祭りに興味がありますか？ 何を見てみたいですか？',
+  },
+  {
+    id: 'topic_019',
+    category: 'study',
+    title: '日本語で読みたい本・マンガ',
+    description: 'タイトルは？ なぜ読みたいですか？ 難しさはどう思いますか？',
+  },
+  {
+    id: 'topic_020',
+    category: 'health',
+    title: 'リラックスの方法',
+    description: '疲れたとき、どうやって休みますか？ 音楽や運動など、好きなリセット方法は？',
+  },
 ];

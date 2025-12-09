@@ -14,7 +14,7 @@ const formatDateStr = (dateObj) =>
 const weekdayLabels = ['日', '月', '火', '水', '木', '金', '土'];
 
 const CalendarProgress = ({ compact = false, refreshKey }) => {
-  const rangeDays = 14;
+  const rangeDays = 10;
   const allData = useMemo(
     () => readAllStudyData().sort((a, b) => new Date(b.date) - new Date(a.date)),
     [refreshKey]
@@ -143,29 +143,28 @@ const CalendarProgress = ({ compact = false, refreshKey }) => {
   );
 
   const renderWeekCards = () => (
-    <div className="week-strip luxe">
+    <div className="week-strip compact-grid">
       {weeklyDays.map((item) => (
-        <div key={item.label} className={`week-card status-${item.status}`}>
+        <div key={item.label} className={`week-card compact status-${item.status}`}>
           <div className="week-card-top">
             <div>
               <div className="week-date">{item.label}</div>
               <div className="week-pattern">パターン{item.data?.pattern || 'ー'}：{item.patternTitle}</div>
             </div>
-            <div className={`status-chip jumbo ${item.status}`}>
+            <div className={`status-chip tight ${item.status}`}>
               {item.status === 'full' ? '完了' : item.status === 'partial' ? 'がんばり中' : 'まだ'}
             </div>
           </div>
           <div className="week-numbers">
-            <div className="week-number big">{item.status === 'empty' ? '0/3' : `${item.doneCount}/${item.requiredCount}`}</div>
-            <div className="week-sub">タスク完了</div>
+            <div className="week-number small">{item.status === 'empty' ? '0/3' : `${item.doneCount}/${item.requiredCount}`}</div>
             <div className="week-accuracy">{item.accuracy !== null ? `正解率 ${item.accuracy}%` : '正解率 ー'}</div>
           </div>
           {renderTypeRows(item.typeStats, item.requiredTypes, dailyPatterns[item.data?.pattern] || {})}
           <div className="week-meta-row">
             {item.data?.conversationTopicId && (
-              <div className="topic-pill">会話：{topicMap[item.data.conversationTopicId] || '選択済み'}</div>
+              <div className="topic-pill subtle">会話：{topicMap[item.data.conversationTopicId] || '選択済み'}</div>
             )}
-            {item.sources.length > 0 && <div className="source-note">PDFメモ：{item.sources.join(' ／ ')}</div>}
+            {item.sources.length > 0 && <div className="source-note subtle">PDFメモ：{item.sources.join(' ／ ')}</div>}
           </div>
         </div>
       ))}
@@ -177,7 +176,7 @@ const CalendarProgress = ({ compact = false, refreshKey }) => {
       <div className="card calendar-card">
         <div className="card-heading">
           <div>
-            <p className="eyebrow">最近14日</p>
+            <p className="eyebrow">最近10日</p>
             <h2>ミニカレンダー</h2>
             <p className="muted">毎日の完了数と正解率をサッとチェック</p>
           </div>
@@ -211,46 +210,36 @@ const CalendarProgress = ({ compact = false, refreshKey }) => {
   }
 
   return (
-    <div className="card calendar-card luxe">
-      <div className="calendar-hero">
+    <div className="card calendar-card compact">
+      <div className="calendar-hero compact">
         <div>
           <p className="eyebrow">学習カレンダー</p>
-          <h2 className="calendar-title">14日ハイライト</h2>
-          <p className="muted">過去のPDFログと会話をぜんぶ可視化。数字で成長を感じよう。</p>
-          <div className="legend">
-            <span className="legend-dot full" />完了 <span className="legend-dot partial" />がんばり中
-          </div>
+          <h2 className="calendar-title">最近10日ハイライト</h2>
+          <p className="muted">完了ペースと正解率をサッと確認しましょう。</p>
         </div>
-        <div className="metric-grid">
-          <div className="metric-card">
-            <div className="metric-label">合計 正解/解答</div>
-            <div className="metric-value">{weeklyTotals.correct}/{weeklyTotals.answered}</div>
-            <div className="metric-sub">正解率 {weeklyTotals.accuracy}%</div>
-          </div>
-          <div className="metric-card">
-            <div className="metric-label">完了した日</div>
-            <div className="metric-value">{weeklyTotals.fullDays}日</div>
-            <div className="metric-sub">部分クリア {weeklyTotals.partialDays}日</div>
-          </div>
-          <div className="metric-card">
-            <div className="metric-label">ハイライト</div>
-            <div className="metric-value">{weeklyTotals.bestDay ? weeklyTotals.bestDay.label : 'まだなし'}</div>
-            <div className="metric-sub">
-              {weeklyTotals.bestDay?.accuracy ? `最高 正解率 ${weeklyTotals.bestDay.accuracy}%` : '記録をつくろう'}
-            </div>
-          </div>
+        <div className="legend">
+          <span className="legend-dot full" />完了 <span className="legend-dot partial" />がんばり中
+        </div>
+      </div>
+
+      <div className="compact-summary-row">
+        <div className="compact-chip">正解 {weeklyTotals.correct}/{weeklyTotals.answered}</div>
+        <div className="compact-chip">完了日 {weeklyTotals.fullDays}日</div>
+        <div className="compact-chip">
+          ベスト {weeklyTotals.bestDay ? weeklyTotals.bestDay.label : 'まだなし'}
+          {weeklyTotals.bestDay?.accuracy ? `（${weeklyTotals.bestDay.accuracy}%）` : ''}
         </div>
       </div>
 
       {renderWeekCards()}
 
-      <div className="type-summary wide">
+      <div className="type-summary compact">
         {['moji', 'reading', 'listening'].map((type) => {
           const stats = typeAccuracy[type];
           if (!stats) return null;
           const labelMap = { moji: '文字・語彙', reading: '読解', listening: '聴解' };
           return (
-            <div key={type} className="type-summary-card large">
+            <div key={type} className="type-summary-card compact">
               <div className="type-summary-title">{labelMap[type]}</div>
               <div className="type-summary-numbers">{stats.correct}/{stats.answered} 正解</div>
               <div className="type-summary-acc">正解率 {stats.accuracy}%</div>
@@ -259,7 +248,7 @@ const CalendarProgress = ({ compact = false, refreshKey }) => {
         })}
       </div>
 
-      <div className="accuracy-box luxe">
+      <div className="accuracy-box compact">
         <div>
           さいきんの正解率：{accuracyData.accuracy}%（{accuracyData.totalCorrect}/{accuracyData.totalAnswered}）
         </div>
