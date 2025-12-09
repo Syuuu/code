@@ -13,9 +13,8 @@ const ListeningPage = ({ pattern, dayData, onSubmit }) => {
     );
   }
 
-  const task = listeningTasks[0];
-  const totalQuestions = task.recommendedQuestionCount * pattern.listening;
-  const perSet = task.recommendedQuestionCount;
+  const tasks = listeningTasks.slice(0, Math.max(1, pattern.listening || 1));
+  const totalQuestions = tasks.reduce((sum, t) => sum + (t.recommendedQuestionCount || 1), 0);
 
   const handleSubmit = () => {
     const value = Number(input);
@@ -29,23 +28,30 @@ const ListeningPage = ({ pattern, dayData, onSubmit }) => {
         <div>
           <p className="eyebrow">聴解</p>
           <h2>耳をつかってれんしゅう</h2>
-          <p className="muted">今日は {pattern.listening} セット、合計 {totalQuestions} 問にチャレンジ</p>
+          <p className="muted">今日は {totalQuestions} 問だけ。各セット1問ずつ、シンプルに。</p>
         </div>
-        <div className="pill soft">めやす {perSet}問 × {pattern.listening}セット</div>
+        <div className="pill soft">めやす 1問 × {tasks.length} セット</div>
       </div>
 
       <div className="listening-hero">
-        <div>
-          <h3>{task.title}</h3>
-          <p>{task.description}</p>
-          <a className="btn-ghost" href={task.videoUrl} target="_blank" rel="noreferrer">
-            動画をひらく
-          </a>
+        <div className="listen-grid">
+          {tasks.map((task) => (
+            <div key={task.id} className="listen-card">
+              <div className="listen-top">
+                <h3>{task.title}</h3>
+                <span className="pill glass">1問</span>
+              </div>
+              <p>{task.description}</p>
+              <a className="btn-ghost" href={task.videoUrl} target="_blank" rel="noreferrer">
+                動画をひらく
+              </a>
+            </div>
+          ))}
         </div>
         <div className="metric-card">
           <div className="metric-label">今日のノルマ</div>
           <div className="metric-number">{totalQuestions}問</div>
-          <div className="metric-sub">1セット {perSet}問 を {pattern.listening}回</div>
+          <div className="metric-sub">各セット1問ずつ、ぜんぶで {tasks.length} セット</div>
         </div>
       </div>
 
