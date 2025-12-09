@@ -14,8 +14,9 @@ const formatDateStr = (dateObj) =>
 const weekdayLabels = ['日', '月', '火', '水', '木', '金', '土'];
 
 const CalendarProgress = ({ compact = false, refreshKey }) => {
+  const rangeDays = 14;
   const allData = useMemo(
-    () => readAllStudyData().sort((a, b) => new Date(a.date) - new Date(b.date)),
+    () => readAllStudyData().sort((a, b) => new Date(b.date) - new Date(a.date)),
     [refreshKey]
   );
   const accuracyData = useMemo(() => aggregateAccuracy(), [refreshKey]);
@@ -30,7 +31,7 @@ const CalendarProgress = ({ compact = false, refreshKey }) => {
   const weeklyDays = useMemo(() => {
     const today = new Date();
     const arr = [];
-    for (let i = 6; i >= 0; i -= 1) {
+    for (let i = 0; i < rangeDays; i += 1) {
       const d = new Date(today);
       d.setDate(today.getDate() - i);
       const key = formatDateStr(d);
@@ -61,7 +62,7 @@ const CalendarProgress = ({ compact = false, refreshKey }) => {
       });
     }
     return arr;
-  }, [dataMap]);
+  }, [dataMap, rangeDays]);
 
   const weeklyTotals = useMemo(() => {
     const totals = {
@@ -176,9 +177,9 @@ const CalendarProgress = ({ compact = false, refreshKey }) => {
       <div className="card calendar-card">
         <div className="card-heading">
           <div>
-            <p className="eyebrow">最近7日</p>
+            <p className="eyebrow">最近14日</p>
             <h2>ミニカレンダー</h2>
-            <p className="muted">毎日の完了数と正解率をちらっとチェック</p>
+            <p className="muted">毎日の完了数と正解率をサッとチェック</p>
           </div>
           <div className="legend">
             <span className="legend-dot full" />完了 <span className="legend-dot partial" />がんばり中
@@ -214,7 +215,7 @@ const CalendarProgress = ({ compact = false, refreshKey }) => {
       <div className="calendar-hero">
         <div>
           <p className="eyebrow">学習カレンダー</p>
-          <h2 className="calendar-title">7日ハイライト</h2>
+          <h2 className="calendar-title">14日ハイライト</h2>
           <p className="muted">過去のPDFログと会話をぜんぶ可視化。数字で成長を感じよう。</p>
           <div className="legend">
             <span className="legend-dot full" />完了 <span className="legend-dot partial" />がんばり中
