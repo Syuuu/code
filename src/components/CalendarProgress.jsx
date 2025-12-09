@@ -52,6 +52,9 @@ const CalendarProgress = ({ compact = false, refreshKey }) => {
         requiredCount,
         accuracy,
         typeStats,
+        sources: ['moji', 'reading']
+          .map((t) => data?.questionProgress?.[t]?.source)
+          .filter(Boolean),
       });
     }
     return arr;
@@ -92,6 +95,11 @@ const CalendarProgress = ({ compact = false, refreshKey }) => {
           {renderTypeChips(item.typeStats)}
           {item.data?.conversationTopicId && (
             <div className="topic-pill">会話：{topicMap[item.data.conversationTopicId] || '選択済み'}</div>
+          )}
+          {item.sources.length > 0 && (
+            <div className="source-note">
+              PDFメモ：{item.sources.join(' ／ ')}
+            </div>
           )}
         </div>
       ))}

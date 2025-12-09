@@ -11,8 +11,8 @@ import {
   formatDateKey,
   loadDayData,
   markTaskDone,
-  recordQuestionResult,
   updateListeningRecord,
+  updateManualQuestionRecord,
 } from './utils/storage';
 
 const App = () => {
@@ -39,8 +39,10 @@ const App = () => {
   }, []);
 
   const pattern = useMemo(() => dailyPatterns[patternKey], [patternKey]);
-  const handleQuestionAnswer = (type, correct, limit) => {
-    setDayData((prev) => recordQuestionResult(prev, type, correct, limit));
+  const handleManualSave = (type, answered, correct, limit, source) => {
+    setDayData((prev) =>
+      updateManualQuestionRecord(prev, type, answered, correct, limit, source ? { source } : {})
+    );
   };
 
   const handleListeningSubmit = (correct, total) => {
@@ -64,9 +66,9 @@ const App = () => {
   const renderContent = () => {
     switch (currentView) {
       case 'moji':
-        return <QuestionPractice type="moji" pattern={pattern} dayData={dayData} onAnswer={handleQuestionAnswer} />;
+        return <QuestionPractice type="moji" pattern={pattern} dayData={dayData} onSave={handleManualSave} />;
       case 'reading':
-        return <QuestionPractice type="reading" pattern={pattern} dayData={dayData} onAnswer={handleQuestionAnswer} />;
+        return <QuestionPractice type="reading" pattern={pattern} dayData={dayData} onSave={handleManualSave} />;
       case 'listening':
         return <ListeningPage pattern={pattern} dayData={dayData} onSubmit={handleListeningSubmit} />;
       case 'conversation':

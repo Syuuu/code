@@ -56,20 +56,31 @@ export const saveDayData = (data) =>
     storage.setItem(key, JSON.stringify(data));
   });
 
-export const recordQuestionResult = (data, type, isCorrect, requiredCount = 0) => {
+export const updateManualQuestionRecord = (
+  data,
+  type,
+  answered,
+  correct,
+  requiredCount = 0,
+  meta = {}
+) => {
   const updated = { ...data };
   const progress = { ...(updated.questionProgress || {}) };
   const current = progress[type] || { answered: 0, correct: 0 };
-  const newAnswered = current.answered + 1;
-  const newCorrect = current.correct + (isCorrect ? 1 : 0);
-  progress[type] = { answered: newAnswered, correct: newCorrect };
-  updated.questionProgress = progress;
-  updated.totalCount = (updated.totalCount || 0) + 1;
-  updated.correctCount = (updated.correctCount || 0) + (isCorrect ? 1 : 0);
 
-  if (requiredCount && newAnswered >= requiredCount) {
-    const doneKey = `${type}Done`;
-    updated[doneKey] = true;
+  const safeAnswered = Math.max(0, Number.isFinite(answered) ? answered : 0);
+  const safeCorrect = Math.max(0, Math.min(Number.isFinite(correct) ? correct : 0, safeAnswered));
+
+  const diffAnswered = safeAnswered - (current.answered || 0);
+  const diffCorrect = safeCorrect - (current.correct || 0);
+
+  progress[type] = { answered: safeAnswered, correct: safeCorrect, ...meta };
+  updated.questionProgress = progress;
+  updated.totalCount = Math.max(0, (updated.totalCount || 0) + diffAnswered);
+  updated.correctCount = Math.max(0, (updated.correctCount || 0) + diffCorrect);
+
+  if (requiredCount && safeAnswered >= requiredCount) {
+    updated[`${type}Done`] = true;
   }
 
   saveDayData(updated);

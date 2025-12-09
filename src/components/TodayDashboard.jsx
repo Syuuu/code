@@ -33,34 +33,37 @@ const TodayDashboard = ({ patternKey, pattern, dayData, onStart }) => {
   const doneCount = steps.filter((t) => t.done).length;
   const progressPercent = Math.round((doneCount / totalRequired) * 100);
 
-  return (
-    <div className="card mission-card spacious luxe">
-      <div className="mission-hero wide">
-        <div>
-          <p className="eyebrow">今日のミッション</p>
-          <h2 className="mission-title">パターン{patternKey}</h2>
-          <p className="mission-sub">{tasks.map((t) => `${t.title}${t.count}問`).join(' ＋ ')} ＋ 会話1トピック</p>
-          <div className="mission-tags">
-            <span className="tag-soft">やさしい30分</span>
-            <span className="tag-soft">パステルルーム</span>
+    return (
+      <div className="card mission-card spacious luxe">
+        <div className="mission-hero wide">
+          <div>
+            <p className="eyebrow">今日のミッション</p>
+            <h2 className="mission-title">パターン{patternKey}</h2>
+            <p className="mission-sub">
+              PDFで {tasks.map((t) => `${t.title}${t.count}問`).join(' ＋ ')} ＋ 会話1トピック
+            </p>
+            <div className="mission-tags">
+              <span className="tag-soft">やさしい30分</span>
+              <span className="tag-soft">パステルルーム</span>
+              <span className="tag-soft">データで管理</span>
+            </div>
+          </div>
+          <div className="hero-pill big">
+            <div className="pill-title">今日の進み</div>
+            <div className="pill-number">{doneCount}/{totalRequired}</div>
+            <div className="pill-sub">{doneCount === totalRequired ? '全部クリア！' : `あと${totalRequired - doneCount}ステップ`}</div>
+            <div className="progress-track mini">
+              <div className="progress-bar" style={{ width: `${progressPercent}%` }} />
+            </div>
           </div>
         </div>
-        <div className="hero-pill big">
-          <div className="pill-title">今日の進み</div>
-          <div className="pill-number">{doneCount}/{totalRequired}</div>
-          <div className="pill-sub">{doneCount === totalRequired ? '全部クリア！' : `あと${totalRequired - doneCount}ステップ`}</div>
-          <div className="progress-track mini">
-            <div className="progress-bar" style={{ width: `${progressPercent}%` }} />
-          </div>
-        </div>
-      </div>
 
       <div className="mission-grid split">
         <div className="mission-progress-panel soft">
           <div className="panel-header">
             <div>
               <div className="panel-label">ステップ順</div>
-              <div className="panel-title">ながれをきれいに</div>
+              <div className="panel-title">PDF→入力→完了</div>
             </div>
             <div className="stickers">
               <span className="sticker">🌸</span>
@@ -102,7 +105,7 @@ const TodayDashboard = ({ patternKey, pattern, dayData, onStart }) => {
                 <div className="task-top">
                   <div>
                     <div className="task-title">{task.title}</div>
-                    <div className="task-detail">{task.count}問</div>
+                    <div className="task-detail">PDFで {task.count}問</div>
                   </div>
                   <div className={`status-chip ${task.done ? 'done' : 'pending'}`}>{statusLabel(task.done)}</div>
                 </div>
